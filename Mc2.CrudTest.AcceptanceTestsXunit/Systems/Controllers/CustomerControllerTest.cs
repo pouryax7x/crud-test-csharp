@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer;
 using Mc2.CrudTest.Application.Core.Dtos.Customer;
+using Mc2.CrudTest.Application.Core.Dtos.Exception;
 using Mc2.CrudTest.Presentation.Server.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -147,6 +148,24 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
             //assert
             mockMediaR.Verify(x => x.Send(It.IsAny<InsertCustomersRequest>(), It.IsAny<CancellationToken>()), Times.Once());
         }
+
+        [Fact]
+        public async Task Insert_OnException_ReturnBadRequest400()
+        {
+            //arrange
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<InsertCustomersRequest>(), It.IsAny<CancellationToken>()))
+                .Throws(new System.Exception());
+            var controller = new CustomerController(mockMediaR.Object);
+            //act
+            var result = await controller.InsertCustomer((InsertCustomersRequest)CustomerInsertList.SafeList.GetList.First().First());
+            //assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+            var objectResult = (BadRequestObjectResult)result;
+            objectResult.Value.Should().BeOfType<ExceptionMessage>();
+        }
+
         #endregion
         #region Update Customer
 
