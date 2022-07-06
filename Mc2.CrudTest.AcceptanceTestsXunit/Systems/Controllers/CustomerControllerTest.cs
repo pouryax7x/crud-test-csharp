@@ -14,7 +14,7 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
     {
 
         [Fact]
-        public async Task GetOnSuccessReturnStatusCode200()
+        public async Task Get_OnSuccess_ReturnStatusCode200()
         {
             //arrange
             var mockMediaR = new Mock<IMediator>();
@@ -26,7 +26,7 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
         }
 
         [Fact]
-        public async Task GetOnSuccessReturnGetCustomerResponse()
+        public async Task Get_OnSuccess_ReturnGetCustomerResponse()
         {
             //arrange
             var mockMediaR = new Mock<IMediator>();
@@ -42,7 +42,7 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
             objectResult.Value.Should().BeOfType<GetCustomersResponse>();
         }
         [Fact]
-        public async Task GetOnSuccessCallMediatR_once_atleast()
+        public async Task Get_OnSuccess_CallMediatR_once_atleast()
         {
             //arrange
             var mockMediaR = new Mock<IMediator>();
@@ -54,6 +54,20 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
             var result = await controller.GetCustomers();
             //assert
             mockMediaR.Verify(x => x.Send(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>()), Times.Once());
+        }
+        [Fact]
+        public async Task Get_NoCustomerFound_Return404()
+        {
+            //arrange
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GetCustomersResponse());
+            var controller = new CustomerController(mockMediaR.Object);
+            //act
+            var result = await controller.GetCustomers();
+            //assert
+            result.Should().BeOfType<NotFoundObjectResult>();
         }
     }
 }
