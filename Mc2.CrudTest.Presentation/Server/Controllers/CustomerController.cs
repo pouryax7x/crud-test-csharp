@@ -35,12 +35,12 @@ namespace Mc2.CrudTest.Presentation.Server.Controllers
             return Ok(result);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateCustomers()
+        public async Task<IActionResult> UpdateCustomer(UpdateCustomersRequest request)
         {
-            return null;
+            return Ok("updated");
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteCustomers()
+        public async Task<IActionResult> DeleteCustomer()
         {
             return null;
         }

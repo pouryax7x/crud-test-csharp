@@ -18,5 +18,13 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
                 throw new NotImplementedException();
             }
         }
+
+        public class UpdateCustomerCommand : IRequestHandler<UpdateCustomersRequest, UpdateCustomersResponse>
+        {
+            public Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

@@ -151,7 +151,23 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
 
         #endregion
         #region Update Customer
-
+        [Fact]
+        public async Task Update_OnSuccess_ReturnStatusCode200()
+        {
+            //arrange
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<UpdateCustomersRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new UpdateCustomersResponse()
+                {
+                    Message = "Customer Update Successfully"
+                });
+            var controller = new CustomerController(mockMediaR.Object);
+            //act
+            var result = (OkObjectResult)await controller.UpdateCustomer((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First());
+            //assert
+            result.StatusCode.Should().Be(200);
+        }
         #endregion
         #region Delete Customer
 
