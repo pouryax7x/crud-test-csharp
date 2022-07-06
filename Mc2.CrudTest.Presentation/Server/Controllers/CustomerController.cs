@@ -21,7 +21,7 @@ namespace Mc2.CrudTest.Presentation.Server.Controllers
         public async Task<IActionResult> GetCustomers()
         {
             var result = await mediator.Send(new GetCustomersRequest() , new System.Threading.CancellationToken());
-            return Ok("Customers");
+            return Ok(result);
         }
     }
 }
