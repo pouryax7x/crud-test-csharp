@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer;
 using Mc2.CrudTest.Application.Core.Dtos.Customer;
 using Mc2.CrudTest.Presentation.Server.Controllers;
 using MediatR;
@@ -22,18 +23,7 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
                 .Setup(x => x.Send(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GetCustomersResponse()
                 {
-                    CustomerList = new System.Collections.Generic.List<Domain.Customer.Customer>
-                    {
-                        new Domain.Customer.Customer
-                        {
-                            BankAccountNumber = "10",
-                            DateOfBirth = System.DateTime.Now,
-                            Email = "AAA@BBB.CCC",
-                            Firstname = "pourya",
-                            Lastname = "tagharrob",
-                            PhoneNumber = 989354930600
-                        }
-                    }
+                    CustomerList = CustomerList.GetCustomers()
                 });
             var controller = new CustomerController(mockMediaR.Object);
             //act
@@ -51,18 +41,7 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
                 .Setup(x => x.Send(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new GetCustomersResponse()
                 {
-                    CustomerList = new System.Collections.Generic.List<Domain.Customer.Customer>
-                    {
-                        new Domain.Customer.Customer
-                        {
-                            BankAccountNumber = "10",
-                            DateOfBirth = System.DateTime.Now,
-                            Email = "AAA@BBB.CCC",
-                            Firstname = "pourya",
-                            Lastname = "tagharrob",
-                            PhoneNumber = 989354930600
-                        }
-                    }
+                    CustomerList = CustomerList.GetCustomers()
                 });
             var controller = new CustomerController(mockMediaR.Object);
             //act
