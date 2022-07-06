@@ -12,7 +12,7 @@ namespace Mc2.CrudTest.Presentation.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCustomers()
         {
-            return null;
+            return Ok("Customers");
         }
     }
 }
