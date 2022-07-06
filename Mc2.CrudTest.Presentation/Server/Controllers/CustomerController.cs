@@ -21,12 +21,28 @@ namespace Mc2.CrudTest.Presentation.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCustomers()
         {
-            var result = await mediator.Send(new GetCustomersRequest() , new System.Threading.CancellationToken());
-            if (result.CustomerList==null || !result.CustomerList.Any())
+            var result = await mediator.Send(new GetCustomersRequest());
+            if (result.CustomerList == null || !result.CustomerList.Any())
             {
                 return NotFound(result);
             }
             return Ok(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> InsertCustomer(InsertCustomersRequest request)
+        {
+            var result = await mediator.Send(request);
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateCustomers()
+        {
+            return null;
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCustomers()
+        {
+            return null;
         }
     }
 }

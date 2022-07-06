@@ -23,7 +23,7 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer
             {
                 BankAccountNumber = "11",
                 DateOfBirth = System.DateTime.Now,
-                Email = "AAA@BBB.CCC",
+                Email = "Aabc@BBB.CCC",
                 Firstname = "pourya1",
                 Lastname = "tagharrob1",
                 PhoneNumber = 989354930601
@@ -32,7 +32,7 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer
             {
                 BankAccountNumber = "12",
                 DateOfBirth = System.DateTime.Now,
-                Email = "AAA@BBB.CCC",
+                Email = "Asss@BBB.CCC",
                 Firstname = "pourya2",
                 Lastname = "tagharrob2",
                 PhoneNumber = 989354930602
