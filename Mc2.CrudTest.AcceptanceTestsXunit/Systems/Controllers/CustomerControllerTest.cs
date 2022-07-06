@@ -18,6 +18,23 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
         {
             //arrange
             var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GetCustomersResponse()
+                {
+                    CustomerList = new System.Collections.Generic.List<Domain.Customer.Customer>
+                    {
+                        new Domain.Customer.Customer
+                        {
+                            BankAccountNumber = "10",
+                            DateOfBirth = System.DateTime.Now,
+                            Email = "AAA@BBB.CCC",
+                            Firstname = "pourya",
+                            Lastname = "tagharrob",
+                            PhoneNumber = 989354930600
+                        }
+                    }
+                });
             var controller = new CustomerController(mockMediaR.Object);
             //act
             var result = (OkObjectResult)await controller.GetCustomers();
@@ -32,7 +49,21 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
             var mockMediaR = new Mock<IMediator>();
             mockMediaR
                 .Setup(x => x.Send(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GetCustomersResponse());
+                .ReturnsAsync(new GetCustomersResponse()
+                {
+                    CustomerList = new System.Collections.Generic.List<Domain.Customer.Customer>
+                    {
+                        new Domain.Customer.Customer
+                        {
+                            BankAccountNumber = "10",
+                            DateOfBirth = System.DateTime.Now,
+                            Email = "AAA@BBB.CCC",
+                            Firstname = "pourya",
+                            Lastname = "tagharrob",
+                            PhoneNumber = 989354930600
+                        }
+                    }
+                });
             var controller = new CustomerController(mockMediaR.Object);
             //act
             var result = await controller.GetCustomers();
