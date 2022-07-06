@@ -1,3 +1,4 @@
+using Mc2.CrudTest.Middleware.Exception;
 using Mc2.CrudTest.Middleware.Middleware.IOC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +47,8 @@ namespace Mc2.CrudTest.Presentation.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
