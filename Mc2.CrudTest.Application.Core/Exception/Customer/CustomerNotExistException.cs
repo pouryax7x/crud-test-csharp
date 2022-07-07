@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Mc2.CrudTest.Application.Core.Exception.Customer
 {
-    public class CustomerAlreadyExistException : BadRequestException
+    public class CustomerNotExistException: NotFoundException
     {
-        override public string Message => "This customer is already exist.";
+        override public string Message => "Customer with this id is not exist.";
     }
 }

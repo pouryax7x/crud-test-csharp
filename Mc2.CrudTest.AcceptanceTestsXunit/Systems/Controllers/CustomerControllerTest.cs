@@ -72,20 +72,6 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
             var objectResult = (OkObjectResult)result;
             objectResult.Value.Should().BeOfType<GetCustomersResponse>();
         }
-        [Fact]
-        public async Task Get_NoCustomerFound_Return404()
-        {
-            //arrange
-            var mockMediaR = new Mock<IMediator>();
-            mockMediaR
-                .Setup(x => x.Send(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GetCustomersResponse());
-            var controller = new CustomerController(mockMediaR.Object);
-            //act
-            var result = await controller.GetCustomers();
-            //assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-        }
         #endregion
         #region Insert Customer
 
@@ -209,40 +195,6 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
             objectResult.Value.Should().BeOfType<UpdateCustomersResponse>();
         }
 
-        [Fact]
-        public async Task Update_OnFail_CustomerNotFoundException_404()
-        {
-            //arrange
-            var mockMediaR = new Mock<IMediator>();
-            mockMediaR
-                .Setup(x => x.Send(It.IsAny<UpdateCustomersRequest>(), It.IsAny<CancellationToken>()))
-                .Throws(new CustomerNotFoundException());
-            var controller = new CustomerController(mockMediaR.Object);
-            //act
-            var result = await controller.UpdateCustomer((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First());
-            //assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-            var objectResult = (NotFoundObjectResult)result;
-            objectResult.Value.Should().BeOfType<ExceptionMessage>();
-        }
-
-        [Fact]
-        public async Task Update_OnFail_CustomerAlreadyExsit_400()
-        {
-            //arrange
-            var mockMediaR = new Mock<IMediator>();
-            mockMediaR
-                .Setup(x => x.Send(It.IsAny<UpdateCustomersRequest>(), It.IsAny<CancellationToken>()))
-                .Throws(new CustomerAlreadyExistException());
-            var controller = new CustomerController(mockMediaR.Object);
-            //act
-            var result = await controller.UpdateCustomer((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First());
-            //assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            var objectResult = (BadRequestObjectResult)result;
-            objectResult.Value.Should().BeOfType<ExceptionMessage>();
-        }
-
         #endregion
         #region Delete Customer
         [Fact]
@@ -299,23 +251,6 @@ namespace Mc2.CrudTest.AcceptanceTests.Systems.Controllers
             result.Should().BeOfType<OkObjectResult>();
             var objectResult = (OkObjectResult)result;
             objectResult.Value.Should().BeOfType<DeleteCustomersResponse>();
-        }
-
-        [Fact]
-        public async Task Delete_OnFail_CustomerNotFoundException_404()
-        {
-            //arrange
-            var mockMediaR = new Mock<IMediator>();
-            mockMediaR
-                .Setup(x => x.Send(It.IsAny<DeleteCustomersRequest>(), It.IsAny<CancellationToken>()))
-                .Throws(new CustomerNotFoundException());
-            var controller = new CustomerController(mockMediaR.Object);
-            //act
-            var result = await controller.DeleteCustomer(new DeleteCustomersRequest { Id = 10});
-            //assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-            var objectResult = (NotFoundObjectResult)result;
-            objectResult.Value.Should().BeOfType<ExceptionMessage>();
         }
         #endregion
     }

@@ -68,14 +68,33 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
         public class UpdateCustomerCommand : IRequestHandler<UpdateCustomersRequest, UpdateCustomersResponse>
         {
             private readonly ICustomerCommandRepository commandRepository;
-
-            public UpdateCustomerCommand(ICustomerCommandRepository commandRepository)
+            private readonly IMediator mediator;
+            public UpdateCustomerCommand(ICustomerCommandRepository commandRepository, IMediator mediator)
             {
                 this.commandRepository = commandRepository;
+                this.mediator = mediator;
             }
-            public Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
+            public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                //Validation
+                var validateResult = await new CutomerValidation().ValidateAsync(request);
+                if (!validateResult.IsValid) throw new ValidationException(validateResult.Errors);
+
+                var CheckUserExistById = await mediator.Send(new CheckCustomerExistByIdRequest(request.Id));
+                if (!CheckUserExistById.IsCustomerExist)
+                {
+                    throw new CustomerNotExistException();
+                }
+
+                var updateResult = await commandRepository.UpdateCustomer(request);
+                if (updateResult)
+                {
+                    return new UpdateCustomersResponse
+                    {
+                        Message = "Customer Updated."
+                    };
+                }
+                throw new CustomerUpdateFaildException();
             }
         }
 

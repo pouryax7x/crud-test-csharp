@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mc2.CrudTest.Application.Core.Exception.Customer
 {
-    public class CustomerNotFoundException : BaseException
+    public class CustomerNotFoundException : NotFoundException
     {
         override public string Message => "Customer Not Found.";
     }

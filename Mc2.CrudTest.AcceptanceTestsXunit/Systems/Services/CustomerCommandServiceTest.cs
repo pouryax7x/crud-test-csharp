@@ -19,6 +19,7 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Systems.Services
 {
     public class CustomerCommandServiceTest
     {
+        #region InsertCustomerTests
         [Fact]
         public async Task InsertCustomer_success()
         {
@@ -143,5 +144,95 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Systems.Services
             //assert
             await result.Should().ThrowAsync<CustomerInsertFaildException>();
         }
+        #endregion
+
+        #region Customer Update Tests
+        [Fact]
+        public async Task UpdateCustomer_success()
+        {
+            //arrange
+            var customerCommandRepository = new Mock<ICustomerCommandRepository>();
+            customerCommandRepository
+                .Setup(x => x.UpdateCustomer((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First()))
+                .ReturnsAsync(true);
+
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<CheckCustomerExistByIdRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new CheckCustomerExistByIdResponse(true));
+
+            var customerCommand = new CustomerCommandService.UpdateCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
+            //act
+            var result = await customerCommand.Handle((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First(), It.IsAny<CancellationToken>());
+            //assert
+            result.Should().BeOfType<UpdateCustomersResponse>();
+            result.Message.Should().NotBeEmpty();
+        }
+
+        public static IEnumerable<object[]> GetCustomerUpdateList_Unvalid()
+        {
+            return CustomerUpdateList.UnSafeList.GetList;
+        }
+        [Theory]
+        [MemberData(nameof(GetCustomerUpdateList_Unvalid))]
+        public async Task UpdateCustomer_NotValid(UpdateCustomersRequest request)
+        {
+            //arrange
+            var customerCommandRepository = new Mock<ICustomerCommandRepository>();
+            customerCommandRepository
+                .Setup(x => x.InsertCustomer((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First()))
+                .ReturnsAsync(true);
+
+            var mockMediaR = new Mock<IMediator>();
+            
+            var customerCommand = new CustomerCommandService.UpdateCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
+            //act
+            var result = () => customerCommand.Handle(request, It.IsAny<CancellationToken>());
+            //assert
+            await result.Should().ThrowAsync<ValidationException>();
+        }
+
+        [Fact]
+        public async Task UpdateCustomer_Faild_UserNotFound()
+        {
+            //arrange
+            var customerCommandRepository = new Mock<ICustomerCommandRepository>();
+            customerCommandRepository
+                .Setup(x => x.UpdateCustomer((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First()))
+                .ReturnsAsync(true);
+
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<CheckCustomerExistByIdRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new CheckCustomerExistByIdResponse(false));
+
+            var customerCommand = new CustomerCommandService.UpdateCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
+            //act
+            var result = () => customerCommand.Handle((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First(), It.IsAny<CancellationToken>());
+            //assert
+            await result.Should().ThrowAsync<CustomerNotExistException>();
+        }
+
+        [Fact]
+        public async Task UpdateCustomer_Faild_Unexpected()
+        {
+            //arrange
+            var customerCommandRepository = new Mock<ICustomerCommandRepository>();
+            customerCommandRepository
+                .Setup(x => x.UpdateCustomer((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First()))
+                .ReturnsAsync(false);
+
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<CheckCustomerExistByIdRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new CheckCustomerExistByIdResponse(true));
+
+            var customerCommand = new CustomerCommandService.UpdateCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
+            //act
+            var result = () => customerCommand.Handle((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First(), It.IsAny<CancellationToken>());
+            //assert
+            await result.Should().ThrowAsync<CustomerUpdateFaildException>();
+        }
+        #endregion
     }
 }

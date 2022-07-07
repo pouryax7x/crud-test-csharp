@@ -23,10 +23,6 @@ namespace Mc2.CrudTest.Presentation.Server.Controllers
         public async Task<IActionResult> GetCustomers()
         {
             var result = await mediator.Send(new GetCustomersRequest());
-            if (result.CustomerList == null || !result.CustomerList.Any())
-            {
-                return NotFound(result);
-            }
             return Ok(result);
         }
         [HttpPost]
@@ -38,34 +34,14 @@ namespace Mc2.CrudTest.Presentation.Server.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCustomer(UpdateCustomersRequest request)
         {
-            try
-            {
-                var result = await mediator.Send(request);
-                return Ok(result);
-            }
-            catch (CustomerNotFoundException ex)
-            {
-                return NotFound(new ExceptionMessage(ex.Message));
-            }
-            catch(CustomerAlreadyExistException ex)
-            { 
-                return BadRequest(new ExceptionMessage(ex.Message));
-            }
-
+            var result = await mediator.Send(request);
+            return Ok(result);
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteCustomer(DeleteCustomersRequest request)
         {
-            try
-            {
-                var result = await mediator.Send(request);
-                return Ok(result);
-            }
-            catch (CustomerNotFoundException ex)
-            {
-                return NotFound(new ExceptionMessage(ex.Message));
-            }
-
+            var result = await mediator.Send(request);
+            return Ok(result);
         }
     }
 }

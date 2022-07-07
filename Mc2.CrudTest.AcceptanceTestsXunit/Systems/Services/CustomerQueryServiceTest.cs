@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer;
 using Mc2.CrudTest.Application.Core.Dtos.Customer;
+using Mc2.CrudTest.Application.Core.Exception.Customer;
 using Mc2.CrudTest.Application.Core.Interface.Repository.Customer;
 using Mc2.CrudTest.Application.Core.Services.Customer;
 using Moq;
@@ -31,6 +32,22 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Systems.Services
             //assert
             result.Should().BeOfType<GetCustomersResponse>();
             result.CustomerList.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public async Task GetCustomers_FaildOrNotFound()
+        {
+            //arrange
+            var mockRepository = new Mock<ICustomerQueryRepository>();
+            mockRepository
+                .Setup(x => x.GetAllCustomers())
+                .ReturnsAsync(new List<Domain.Customer.Customer>());
+
+            var customerQuery = new CustomerQueryService.GetCustomersQuery(mockRepository.Object);
+            //act
+            var result = () => customerQuery.Handle(It.IsAny<GetCustomersRequest>(), It.IsAny<CancellationToken>());
+            //assert
+            await result.Should().ThrowAsync<CustomerListIsEmptyException>();
         }
     }
 }

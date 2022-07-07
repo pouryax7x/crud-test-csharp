@@ -1,7 +1,9 @@
 ﻿using Mc2.CrudTest.Application.Core.Dtos.Customer;
+using Mc2.CrudTest.Application.Core.Exception.Customer;
 using Mc2.CrudTest.Application.Core.Interface.Repository.Customer;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +23,10 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
             public async Task<GetCustomersResponse> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
             {
                 var result = await customerQuery.GetAllCustomers();
+                if (!result.Any())
+                {
+                    throw new CustomerListIsEmptyException();
+                }
                 return new GetCustomersResponse(result);
             }
         }

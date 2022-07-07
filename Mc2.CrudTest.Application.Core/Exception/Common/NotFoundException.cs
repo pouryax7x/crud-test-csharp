@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mc2.CrudTest.Application.Core.Exception.Common
 {
-    public abstract class BaseException : System.Exception
+    public abstract class NotFoundException : BaseException
     {
     }
 }

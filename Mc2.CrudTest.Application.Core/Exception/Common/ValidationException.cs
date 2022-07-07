@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mc2.CrudTest.Application.Core.Exception.Common
 {
-    public class ValidationException : System.Exception
+    public class ValidationException : BaseException
     {
         private readonly string messages;
 
