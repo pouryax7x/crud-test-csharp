@@ -1,5 +1,5 @@
 ﻿using Mc2.CrudTest.Application.Core.Dtos.Exception;
-using Mc2.CrudTest.Application.Core.Exception;
+using Mc2.CrudTest.Application.Core.Exception.Common;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

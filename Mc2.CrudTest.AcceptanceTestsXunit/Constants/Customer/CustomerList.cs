@@ -13,7 +13,7 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer
             new Domain.Customer.Customer
             {
                 BankAccountNumber = "10",
-                DateOfBirth = System.DateTime.Now,
+                DateOfBirth = DateTime.Today,
                 Email = "AAA@BBB.CCC",
                 Firstname = "pourya",
                 Lastname = "tagharrob",
@@ -22,7 +22,7 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer
             new Domain.Customer.Customer
             {
                 BankAccountNumber = "11",
-                DateOfBirth = System.DateTime.Now,
+                DateOfBirth = DateTime.Today,
                 Email = "Aabc@BBB.CCC",
                 Firstname = "pourya1",
                 Lastname = "tagharrob1",
@@ -31,7 +31,7 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer
             new Domain.Customer.Customer
             {
                 BankAccountNumber = "12",
-                DateOfBirth = System.DateTime.Now,
+                DateOfBirth = DateTime.Today,
                 Email = "Asss@BBB.CCC",
                 Firstname = "pourya2",
                 Lastname = "tagharrob2",

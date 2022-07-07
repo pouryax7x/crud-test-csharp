@@ -18,36 +18,119 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Constants.Customer
                     {
                         new InsertCustomersRequest
                         {
-                            BankAccountNumber = "123",
-                            DateOfBirth = DateTime.Today,
-                            Email = "A1@B1.com",
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplay@Google.com",
                             Firstname = "Pourya",
                             Lastname = "Tagharrob",
-                            PhoneNumber = 98354930600 
+                            PhoneNumber = 989354930600 
                         }
                     },
                     new object[]
                     {
                         new InsertCustomersRequest
                         {
-                            BankAccountNumber = "124",
-                            DateOfBirth = DateTime.Today,
-                            Email = "A2@B2.com",
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplay@Google.com",
                             Firstname = "Pourya1",
                             Lastname = "Tagharrob1",
-                            PhoneNumber = 98354930601
+                            PhoneNumber = 989354930601
                         },
                     },
                     new object[]
                     {
                         new InsertCustomersRequest
                         {
-                            BankAccountNumber = "125",
-                            DateOfBirth = DateTime.Today,
-                            Email = "A3@B3.com",
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplay@Google.com",
                             Firstname = "Pourya3",
                             Lastname = "Tagharrob3",
-                            PhoneNumber = 98354930603
+                            PhoneNumber = 989354930602
+                        },
+                    }
+                };
+            public static IEnumerable<object[]> GetList
+            {
+                get { return _list; }
+            }
+        }
+
+        public class UnSafeList
+        {
+            private static List<object[]> _list = new List<object[]>()
+                {
+                    new object[]
+                    {
+                        new InsertCustomersRequest
+                        {
+                            BankAccountNumber = "123",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplay@Google.com",
+                            Firstname = "Pourya",
+                            Lastname = "Tagharrob",
+                            PhoneNumber = 989354930600
+                        }
+                    },
+                    new object[]
+                    {
+                        new InsertCustomersRequest
+                        {
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(1),
+                            Email = "NoReplay@Google.com",
+                            Firstname = "Pourya1",
+                            Lastname = "Tagharrob1",
+                            PhoneNumber = 989354930601
+                        },
+                    },
+                    new object[]
+                    {
+                        new InsertCustomersRequest
+                        {
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplayGoogle.com",
+                            Firstname = "Pourya3",
+                            Lastname = "Tagharrob3",
+                            PhoneNumber = 989354930602
+                        },
+                    },
+                    new object[]
+                    {
+                        new InsertCustomersRequest
+                        {
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplay@Google.com",
+                            Firstname = " ",
+                            Lastname = "Tagharrob3",
+                            PhoneNumber = 989354930602
+                        },
+                    },
+                    new object[]
+                    {
+                        new InsertCustomersRequest
+                        {
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplay@Google.com",
+                            Firstname = "Pourya3",
+                            Lastname = "",
+                            PhoneNumber = 989354930602
+                        },
+                    },
+                    new object[]
+                    {
+                        new InsertCustomersRequest
+                        {
+                            BankAccountNumber = "12345678910",
+                            DateOfBirth = DateTime.Today.AddDays(-1),
+                            Email = "NoReplay@Google.com",
+                            Firstname = "Pourya3",
+                            Lastname = "Tagharrob3",
+                            PhoneNumber = 9890602
                         },
                     }
                 };

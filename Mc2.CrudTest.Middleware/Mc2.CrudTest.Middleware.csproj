@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mc2.CrudTest.Application.Core\Mc2.CrudTest.Application.Core.csproj" />
+    <ProjectReference Include="..\Mc2.CrudTest.Persistence\Mc2.CrudTest.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
