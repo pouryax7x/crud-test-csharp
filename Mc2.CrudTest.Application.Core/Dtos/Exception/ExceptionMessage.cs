@@ -10,5 +10,10 @@ namespace Mc2.CrudTest.Application.Core.Dtos.Exception
     public class ExceptionMessage : IMessage
     {
         public string Message { get; set; }
+
+        public ExceptionMessage(string message)
+        {
+            Message = message;
+        }
     }
 }

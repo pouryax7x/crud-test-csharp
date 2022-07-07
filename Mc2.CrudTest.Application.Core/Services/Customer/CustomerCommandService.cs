@@ -26,5 +26,13 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
                 throw new NotImplementedException();
             }
         }
+
+        public class DeleteCustomerCommand : IRequestHandler<DeleteCustomersRequest, DeleteCustomersResponse>
+        {
+            public Task<DeleteCustomersResponse> Handle(DeleteCustomersRequest request, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

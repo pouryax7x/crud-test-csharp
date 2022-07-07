@@ -46,7 +46,7 @@ namespace Mc2.CrudTest.Middleware.Exception
                         break;
                 }
 
-                var result = JsonSerializer.Serialize(new ExceptionMessage { Message = errorMessage });
+                var result = JsonSerializer.Serialize(new ExceptionMessage(errorMessage));
                 await response.WriteAsync(result);
             }
         }
