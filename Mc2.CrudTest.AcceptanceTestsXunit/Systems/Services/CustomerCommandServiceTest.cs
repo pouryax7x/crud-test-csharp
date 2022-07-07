@@ -184,7 +184,7 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Systems.Services
                 .ReturnsAsync(true);
 
             var mockMediaR = new Mock<IMediator>();
-            
+
             var customerCommand = new CustomerCommandService.UpdateCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
             //act
             var result = () => customerCommand.Handle(request, It.IsAny<CancellationToken>());
@@ -232,6 +232,73 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Systems.Services
             var result = () => customerCommand.Handle((UpdateCustomersRequest)CustomerUpdateList.UpdateList.GetList.First().First(), It.IsAny<CancellationToken>());
             //assert
             await result.Should().ThrowAsync<CustomerUpdateFaildException>();
+        }
+        #endregion
+
+        #region Customer Delete Tests
+
+        [Fact]
+        public async Task DeleteCustomer_success()
+        {
+            //arrange
+            var customerCommandRepository = new Mock<ICustomerCommandRepository>();
+            customerCommandRepository
+                .Setup(x => x.DeleteCustomer(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<CheckCustomerExistByIdRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new CheckCustomerExistByIdResponse(true));
+
+            var customerCommand = new CustomerCommandService.DeleteCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
+            //act
+            var result = await customerCommand.Handle(new DeleteCustomersRequest { Id = 10 }, It.IsAny<CancellationToken>());
+            //assert
+            result.Should().BeOfType<DeleteCustomersResponse>();
+            result.Message.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public async Task DeleteCustomer_Faild_UserNotFound()
+        {
+            //arrange
+            var customerCommandRepository = new Mock<ICustomerCommandRepository>();
+            customerCommandRepository
+                .Setup(x => x.DeleteCustomer(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<CheckCustomerExistByIdRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new CheckCustomerExistByIdResponse(false));
+
+            var customerCommand = new CustomerCommandService.DeleteCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
+            //act
+            var result = () => customerCommand.Handle(new DeleteCustomersRequest { Id = 10 }, It.IsAny<CancellationToken>());
+            //assert
+            await result.Should().ThrowAsync<CustomerNotExistException>();
+        }
+
+        [Fact]
+        public async Task DeleteCustomer_Faild_Unexpected()
+        {
+            //arrange
+            var customerCommandRepository = new Mock<ICustomerCommandRepository>();
+            customerCommandRepository
+                .Setup(x => x.DeleteCustomer(It.IsAny<int>()))
+                .ReturnsAsync(false);
+
+            var mockMediaR = new Mock<IMediator>();
+            mockMediaR
+                .Setup(x => x.Send(It.IsAny<CheckCustomerExistByIdRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new CheckCustomerExistByIdResponse(true));
+
+            var customerCommand = new CustomerCommandService.DeleteCustomerCommand(customerCommandRepository.Object, mockMediaR.Object);
+            //act
+            var result = () => customerCommand.Handle(new DeleteCustomersRequest { Id = 10 }, It.IsAny<CancellationToken>());
+            //assert
+            await result.Should().ThrowAsync<CustomerDeleteFaildException>();
         }
         #endregion
     }

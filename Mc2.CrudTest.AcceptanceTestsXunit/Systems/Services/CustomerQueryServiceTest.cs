@@ -49,5 +49,37 @@ namespace Mc2.CrudTest.AcceptanceTestsXunit.Systems.Services
             //assert
             await result.Should().ThrowAsync<CustomerListIsEmptyException>();
         }
+
+        [Fact]
+        public async Task CheckUserExistWithNameFamilyBirthDate()
+        {
+            //arrange
+            var mockRepository = new Mock<ICustomerQueryRepository>();
+            mockRepository
+                .Setup(x => x.CheckUserExistWithNameFamilyBirthDate(It.IsAny<CheckCustomerWithDuplicateNameFamilyBirthdateExistRequest>()))
+                .ReturnsAsync(true);
+
+            var customerQuery = new CustomerQueryService.CheckUserExistWithNameFamilyBirthDate(mockRepository.Object);
+            //act
+            var result = await customerQuery.Handle(It.IsAny<CheckCustomerWithDuplicateNameFamilyBirthdateExistRequest>(), It.IsAny<CancellationToken>());
+            //assert
+            result.IsCustomerExist.Should().Be(true);
+        }
+
+        [Fact]
+        public async Task CheckEmailExist()
+        {
+            //arrange
+            var mockRepository = new Mock<ICustomerQueryRepository>();
+            mockRepository
+                .Setup(x => x.CheckEmailExsit(It.IsAny<CheckEmailExistRequest>()))
+                .ReturnsAsync(true);
+
+            var customerQuery = new CustomerQueryService.CheckEmailExist(mockRepository.Object);
+            //act
+            var result = await customerQuery.Handle(It.IsAny<CheckEmailExistRequest>(), It.IsAny<CancellationToken>());
+            //assert
+            result.IsEmailExsit.Should().Be(true);
+        }
     }
 }

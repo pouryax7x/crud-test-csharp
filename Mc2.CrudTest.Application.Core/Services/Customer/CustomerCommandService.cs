@@ -101,14 +101,32 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
         public class DeleteCustomerCommand : IRequestHandler<DeleteCustomersRequest, DeleteCustomersResponse>
         {
             private readonly ICustomerCommandRepository commandRepository;
+            private readonly IMediator mediator;
 
-            public DeleteCustomerCommand(ICustomerCommandRepository commandRepository)
+
+            public DeleteCustomerCommand(ICustomerCommandRepository commandRepository, IMediator mediator)
             {
                 this.commandRepository = commandRepository;
+                this.mediator = mediator;
             }
-            public Task<DeleteCustomersResponse> Handle(DeleteCustomersRequest request, CancellationToken cancellationToken)
+            public async Task<DeleteCustomersResponse> Handle(DeleteCustomersRequest request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                var CheckUserExistById = await mediator.Send(new CheckCustomerExistByIdRequest(request.Id));
+                if (!CheckUserExistById.IsCustomerExist)
+                {
+                    throw new CustomerNotExistException();
+                }
+
+                var updateResult = await commandRepository.DeleteCustomer(request.Id);
+                if (updateResult)
+                {
+                    return new DeleteCustomersResponse
+                    {
+                        Message = "Customer Updated."
+                    };
+                }
+                throw new CustomerDeleteFaildException();   
+
             }
         }
     }
