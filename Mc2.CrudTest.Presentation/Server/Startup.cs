@@ -34,6 +34,8 @@ namespace Mc2.CrudTest.Presentation.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MC2.CrudTest.Controllers v1"));
             }
             else
             {
