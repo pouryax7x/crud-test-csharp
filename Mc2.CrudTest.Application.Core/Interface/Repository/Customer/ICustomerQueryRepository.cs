@@ -12,5 +12,6 @@ namespace Mc2.CrudTest.Application.Core.Interface.Repository.Customer
         public Task<List<Domain.Customer.Customer>> GetAllCustomers();
         public Task<bool> CheckEmailExsit(CheckEmailExistRequest request);
         Task<bool> CheckUserExistWithNameFamilyBirthDate(CheckCustomerWithDuplicateNameFamilyBirthdateExistRequest request);
+        Task<bool> CheckCustomerExistById(int id);
     }
 }

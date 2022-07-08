@@ -80,7 +80,7 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
                 var validateResult = await new CutomerValidation().ValidateAsync(request);
                 if (!validateResult.IsValid) throw new ValidationException(validateResult.Errors);
 
-                var CheckUserExistById = await mediator.Send(new CheckCustomerExistByIdRequest(request.Id));
+                var CheckUserExistById = await mediator.Send(new CheckCustomerExistByIdRequest(request.Id), cancellationToken);
                 if (!CheckUserExistById.IsCustomerExist)
                 {
                     throw new CustomerNotExistException();
@@ -122,7 +122,7 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
                 {
                     return new DeleteCustomersResponse
                     {
-                        Message = "Customer Updated."
+                        Message = "Customer Deleted."
                     };
                 }
                 throw new CustomerDeleteFaildException();   

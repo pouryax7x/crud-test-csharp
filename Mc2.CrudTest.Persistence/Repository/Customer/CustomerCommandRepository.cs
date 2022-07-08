@@ -1,4 +1,6 @@
-﻿using Mc2.CrudTest.Application.Core.Interface.Repository.Customer;
+﻿using AutoMapper;
+using Mc2.CrudTest.Application.Core.Interface.Repository.Customer;
+using Mc2.CrudTest.Persistence.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +11,52 @@ namespace Mc2.CrudTest.Persistence.Repository.Customer
 {
     public class CustomerCommandRepository : ICustomerCommandRepository
     {
-        public Task<bool> DeleteCustomer(int customerId)
+        private readonly SmartMedContext context;
+        private readonly IMapper mapper;
+
+        public CustomerCommandRepository(SmartMedContext context, IMapper mapper)
         {
-            throw new NotImplementedException();
+            this.context = context;
+            this.mapper = mapper;
         }
 
-        public Task<bool> InsertCustomer(Domain.Customer.Customer customer)
+        public async Task<bool> DeleteCustomer(int customerId)
         {
-            throw new NotImplementedException();
+            var entity = await context.Customers.FindAsync(customerId);
+            context.Customers.Remove(entity);
+            var result = await context.SaveChangesAsync();
+            if (result >= 0)
+            {
+                return true;
+            }
+            return false;
         }
 
-        public Task<bool> UpdateCustomer(Domain.Customer.Customer customer)
+        public async Task<bool> InsertCustomer(Domain.Customer.Customer customer)
         {
-            throw new NotImplementedException();
+            var entity = mapper.Map<Entities.Customer>(customer);
+            entity.Id = 0;
+            context.Add(entity);
+            var result = await context.SaveChangesAsync();
+            if (result >= 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> UpdateCustomer(Domain.Customer.Customer customer)
+        {
+            var entity = mapper.Map<Entities.Customer>(customer);
+            context.Entry(await context.Customers.FindAsync(customer.Id)).CurrentValues.SetValues(entity);
+            context.SaveChanges();
+
+            var result = await context.SaveChangesAsync();
+            if (result >= 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

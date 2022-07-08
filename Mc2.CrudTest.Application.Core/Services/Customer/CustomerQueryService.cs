@@ -59,5 +59,20 @@ namespace Mc2.CrudTest.Application.Core.Services.Customer
                 return new CheckCustomerWithDuplicateNameFamilyBirthdateExistResponse(result);
             }
         }
+
+        public class CheckCustomerExistById : IRequestHandler<CheckCustomerExistByIdRequest, CheckCustomerExistByIdResponse>
+        {
+            private readonly ICustomerQueryRepository customerQuery;
+
+            public CheckCustomerExistById(ICustomerQueryRepository customerQuery)
+            {
+                this.customerQuery = customerQuery;
+            }
+            public async Task<CheckCustomerExistByIdResponse> Handle(CheckCustomerExistByIdRequest request, CancellationToken cancellationToken)
+            {
+                var result = await customerQuery.CheckCustomerExistById(request.Id);
+                return new CheckCustomerExistByIdResponse(result);
+            }
+        }
     }
 }
